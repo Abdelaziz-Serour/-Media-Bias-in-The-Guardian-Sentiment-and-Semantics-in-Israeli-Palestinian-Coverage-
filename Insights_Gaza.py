@@ -1,0 +1,62 @@
+"""
+Insights Gaza — Python script version of the original notebook.
+
+This script analyzes media coverage and sentiment related to the Gaza conflict
+using news articles. It includes basic data visualization and word cloud generation.
+"""
+
+# === Imports ===
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from wordcloud import WordCloud
+
+# Optional if used in Colab originally
+# import google.colab
+
+# === Load Data ===
+# Example path — update this to your actual CSV or dataset
+data_path = "data/guardian_articles.csv"
+df = pd.read_csv(data_path)
+
+# === Basic EDA ===
+print("Data shape:", df.shape)
+print("Columns:", df.columns)
+print(df.head())
+
+# === Example: Plot article frequency over time ===
+if 'date' in df.columns:
+    df['date'] = pd.to_datetime(df['date'])
+    plt.figure(figsize=(12, 5))
+    sns.histplot(df['date'], bins=50, kde=False)
+    plt.title("Article Frequency Over Time")
+    plt.xlabel("Date")
+    plt.ylabel("Number of Articles")
+    plt.tight_layout()
+    plt.savefig("article_frequency.png", dpi=300)
+    plt.close()
+
+# === Example: Word Cloud of Headlines ===
+if 'headline' in df.columns:
+    text = " ".join(str(h) for h in df['headline'] if pd.notna(h))
+    wc = WordCloud(width=1200, height=800, background_color="white").generate(text)
+    plt.figure(figsize=(12, 8))
+    plt.imshow(wc, interpolation="bilinear")
+    plt.axis("off")
+    plt.title("Word Cloud of Headlines")
+    plt.tight_layout()
+    plt.savefig("headline_wordcloud.png", dpi=300)
+    plt.close()
+
+# === Example: Sentiment column visualization if available ===
+if 'sentiment' in df.columns:
+    plt.figure(figsize=(8, 5))
+    sns.histplot(df['sentiment'], bins=20, kde=True)
+    plt.title("Sentiment Distribution")
+    plt.xlabel("Sentiment Score")
+    plt.ylabel("Count")
+    plt.tight_layout()
+    plt.savefig("sentiment_distribution.png", dpi=300)
+    plt.close()
+
+print("✅ Analysis complete. Figures saved in the current directory.")
