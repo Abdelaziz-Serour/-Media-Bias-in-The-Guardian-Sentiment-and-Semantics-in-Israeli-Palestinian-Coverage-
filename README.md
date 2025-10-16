@@ -40,7 +40,7 @@ pip install -r requirements.txt
 ```
 **2. Run or open the notebook**
 ```bash
-jupyter notebook Insights_Gaza.ipynb
+python Insights_Gaza.py
 ```
 ## 📝 Notes
 - This repository reflects **only my personal work** on the media bias analysis project.  
